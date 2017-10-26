@@ -126,11 +126,9 @@ if __name__ == "__main__":
 
     # Condicion inicial para u
 
-    for i in range(args.n):
+    xdata = np.array( [i*dx for i in range(args.n)] )
 
-        V[i,0] = np.exp( -200.*(i*dx-0.25)**2 )
-
-
+    V[0:args.n,0] = np.exp( -200.*(xdata-0.25)**2 )
 
 
         
@@ -146,7 +144,7 @@ if __name__ == "__main__":
     k4 = np.zeros( (2*args.n-2, 1) )
     
     
-    for i in range(1):
+    for i in range(nt):
 
         k1 = args.dt * np.matmul(M, V[:,i])
 
@@ -156,49 +154,44 @@ if __name__ == "__main__":
 
         k4 = args.dt * np.matmul(M, ( V[:,i] + k3 ) )
         
-        V[:,i+1] = V[:,i] + (1./6.) * k1 + (1./3.)*(k1+k2)  + (1./6.) * k4
+        V[:,i+1] = V[:,i] + (1./6.) * k1 + (1./3.)*(k2+k3)  + (1./6.) * k4
 
-        
 
 
     
 
 
-    fig, ax = plt.subplots()
+    # fig, ax = plt.subplots()
 
-    time_template = 'time = %.1f'
+    # # time_template = 'time = %.1f'
         
-    ax.set_xlim(0, 4)
+    # ax.set_xlim(0, 4)
 
-    ax.set_ylim(-1, 2)
+    # ax.set_ylim(-0.5, 1.1)
         
-    # time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
+    # # time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
 
-       
+    # l1, = plt.plot([], [], '-', animated=True)
 
 
-    l1, = plt.plot([], [], 'o-', markersize = 10, animated=True)
+    # # plt.xticks([])
 
+    # # plt.yticks([])
+            
+
+    # def update(frame, line1):            
     
-    # plt.xticks([])
-
-    # plt.yticks([])
+    #     line1.set_data(xdata, V[0:args.n,frame])
             
-
-    # def update(frame, line1, ttext):            
-    
-    #     line1.set_data(xdata, V[:,frame])
-
-            
-    #     ttext.set_text(time_template%(frame*h/np.pi))
-            
-            
-    #     return line1, ttext
-
+    #     # ttext.set_text(time_template%(frame*args.dt))
+                        
+    #     return line1
 
 
         
-    # ani = animation.FuncAnimation(fig, update, np.arange(1,nt),fargs = (l1, time_text), interval=10,  blit=True)
+    # ani = animation.FuncAnimation(fig, update, np.arange(1,nt), fargs = (l1), interval=1,  blit=True)
+
+
 
         
     # plt.show()
