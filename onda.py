@@ -50,6 +50,8 @@ if __name__ == "__main__":
 
     parser.add_argument('-n', help='Cantidad de puntos', type = int, default = 400)
 
+    parser.add_argument('--rate', help='Intervalos de animacion', type = int, default = 20)
+
     parser.add_argument('--tf', help='Tiempo final', type = float, default = 7.)
 
     parser.add_argument('--upwind', help='Upwind de primer orden en los bordes', action = 'store_true', dest='borde')
@@ -131,7 +133,11 @@ if __name__ == "__main__":
     V[0:args.n,0] = np.exp( -200.*(xdata-0.25)**2 )
 
 
-        
+
+
+
+
+    
         
     # Resolucion con RK4
     
@@ -158,43 +164,60 @@ if __name__ == "__main__":
 
 
 
+
+
+        
+
+        
+    # Animacion
+
+
+    fig, ax = plt.subplots()
+
+    time_template = 'time = %.1f'
+        
+    ax.set_xlim(0, 4)
+
+    ax.set_ylim(-0.1, 0.6)
+        
+    ttext = ax.text(1.0, 0.4, '', transform=ax.transAxes)
+
+    line, = plt.plot([], [], lw = 2, animated=True)
+
+    ax.grid()
+
+
+
+    # Grafico de ciertos perfiles de velocidades
+
+    if args.vel != 'uniforme':
+
+        vdata = np.array(   [ vmedio( i*dx, modo = args.vel )  for i in range(args.n) ]   )
+
+        ax2 = ax.twinx()
+        
+        ax2.plot(xdata, vdata, '--', color = 'green', alpha = 0.5)
+
+        ax2.set_yticks([])
+
+        ax2.set_xlim(0, 4)
     
 
-
-    # fig, ax = plt.subplots()
-
-    # # time_template = 'time = %.1f'
-        
-    # ax.set_xlim(0, 4)
-
-    # ax.set_ylim(-0.5, 1.1)
-        
-    # # time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
-
-    # l1, = plt.plot([], [], '-', animated=True)
-
-
-    # # plt.xticks([])
-
-    # # plt.yticks([])
             
 
-    # def update(frame, line1):            
+    def update(frame):            
     
-    #     line1.set_data(xdata, V[0:args.n,frame])
+        line.set_data(xdata, V[0:args.n,frame])
             
-    #     # ttext.set_text(time_template%(frame*args.dt))
+        ttext.set_text( time_template%(frame*args.dt) )
                         
-    #     return line1
+        return line, ttext
 
 
         
-    # ani = animation.FuncAnimation(fig, update, np.arange(1,nt), fargs = (l1), interval=1,  blit=True)
-
-
-
+    ani = animation.FuncAnimation(fig, update, np.arange(1,nt), interval=args.rate,  blit=True)
         
-    # plt.show()
+    plt.show()
 
     
         
