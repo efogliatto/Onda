@@ -22,6 +22,10 @@ def vmedio( x, modo = 'uniforme'):
 
         c = 1.
 
+    elif modo == 'arenisca':
+
+        c = 1.5
+        
     elif modo == 'transicion':
 
         c = 1.25 - 0.25 * np.tanh(40.*(0.75-x))
@@ -56,7 +60,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--upwind', help='Upwind de primer orden en los bordes', action = 'store_true', dest='borde')
 
-    parser.add_argument('-c','--velocidad', help='Perfil de velocidad del medio', dest = 'vel', default = 'uniforme', choices = ['uniforme','transicion','alien'])
+    parser.add_argument('-c','--velocidad', help='Perfil de velocidad del medio', dest = 'vel', default = 'uniforme', choices = ['uniforme','arenisca','transicion','alien'])
 
     args = parser.parse_args()
 
