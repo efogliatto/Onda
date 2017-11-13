@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
     ax.set_ylim(-0.1, 0.6)
         
-    ttext = ax.text(1.0, 0.4, '', transform=ax.transAxes)
+    ttext = ax.text(0.45, 0.05, '', transform=ax.transAxes)
 
     line, = plt.plot([], [], lw = 2, animated=True)
 
